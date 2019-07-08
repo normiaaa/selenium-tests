@@ -3,7 +3,7 @@ package workshopExamples;
 import java.util.Random;
 
 public class Utils {
-    public String getRandomEmailAddress() {
+    public static String getRandomEmailAddress() {
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
