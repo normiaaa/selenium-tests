@@ -1,4 +1,4 @@
-package workshopExamples;
+package tests;
 
 import java.util.Random;
 
