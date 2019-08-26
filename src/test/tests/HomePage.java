@@ -3,7 +3,9 @@ package tests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -25,6 +27,7 @@ public class HomePage {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", userDirProperty + "/src/main/resources/chromedriver");
         chromeDriver = new ChromeDriver();
+        chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @AfterTest
@@ -34,7 +37,6 @@ public class HomePage {
 
     @Test(description = "Display Elements", priority = 1)
     public void contentTest() throws InterruptedException {
-        chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         chromeDriver.get("http://automationpractice.com/index.php");
         Assert.assertTrue(chromeDriver.getTitle().contains("My Store"));
         chromeDriver.findElementById("search_query_top").isDisplayed();
@@ -42,38 +44,38 @@ public class HomePage {
         chromeDriver.findElementById("homepage-slider").isDisplayed();
 
 
-        Thread.sleep(3000);
+
     }
 
     @Test(description = "Valid Search Query")
     public void searchTest() throws InterruptedException {
 
+        WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
+
         chromeDriver.get("http://automationpractice.com/index.php");
-        chromeDriver.findElementById("search_query_top").sendKeys("dress");
+        WebElement searchInput = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("search_query_top")));
+        searchInput.sendKeys("dress");
         chromeDriver.findElementByClassName("button-search").click();
         Assert.assertTrue(chromeDriver.findElementByClassName("product-name").getText().contains("dress"));
-
-
-        Thread.sleep(3000);
     }
 
     @Test(description = "Invalid Search Query", priority = 2)
     public void searchTestnegative() throws InterruptedException {
-
-        String searchQuery = new String("asdf");
-        chromeDriver.findElementById("search_query_top").clear();
-        chromeDriver.findElementById("search_query_top").sendKeys("asdf");
+        WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
+        WebElement searchInput = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("search_query_top")));
+        searchInput.clear();
+        searchInput.sendKeys("asdf");
         chromeDriver.findElementByClassName("button-search").click();
         chromeDriver.findElementByClassName("alert-warning").isDisplayed();
         Assert.assertTrue(chromeDriver.findElementByClassName("alert-warning").getText().contains("asdf"));
-
-
-        Thread.sleep(3000);
     }
 
     @Test(description = "Add To Cart", priority = 3)
     public void addTocart() throws InterruptedException {
 
+        WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
         chromeDriver.get("http://automationpractice.com/index.php");
         WebElement cardWrapper = chromeDriver.findElement(By.cssSelector("#homefeatured > .ajax_block_product:nth-child(2)"));
         Actions hover = new Actions(chromeDriver);
@@ -85,12 +87,11 @@ public class HomePage {
 
         Thread.sleep(2000);
 
-        WebElement cartWrapperHeader = chromeDriver.findElement(By.cssSelector(".layer_cart_product > h2"));
+
+        WebElement cartWrapperHeader = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".layer_cart_product > h2")));
         cartWrapperHeader.isDisplayed();
         Assert.assertTrue(cartWrapperHeader.getText().contains("Product successfully added to your shopping cart"));
-
-
-        Thread.sleep(3000);
 
     }
 
@@ -104,10 +105,6 @@ public class HomePage {
         WebElement newUser = chromeDriver.findElement(By.cssSelector(".alert-success"));
         newUser.isDisplayed();
         Assert.assertTrue(newUser.getText().contains("Newsletter : You have successfully subscribed to this newsletter."));
-
-
-        Thread.sleep(3000);
-
     }
 
     @Test(description = "Previous User Newsletter", priority = 5)
@@ -120,10 +117,6 @@ public class HomePage {
         WebElement previousUser = chromeDriver.findElement(By.cssSelector(".alert-danger"));
         previousUser.isDisplayed();
         Assert.assertTrue(previousUser.getText().contains("Newsletter : This email address is already registered."));
-
-
-        Thread.sleep(3000);
-
 
     }
 
@@ -168,8 +161,6 @@ public class HomePage {
 
         chromeDriver.switchTo().window(originalHandle);
 
-
-        Thread.sleep(3000);
     }
 
 
@@ -199,10 +190,6 @@ public class HomePage {
         chromeDriver.findElementById("message").sendKeys("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
         chromeDriver.findElementById("submitMessage").click();
-
-
-
-     Thread.sleep(3000);
 
 
 

@@ -4,7 +4,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -42,10 +44,12 @@ public class Order {
 
         //Title
 
-        Thread.sleep(1500);
-        chromeDriver.findElementById("id_gender2").click();
+        WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
 
-        Thread.sleep(1500);
+        WebElement gender = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("id_gender2")));
+        gender.click();
+
 
         //First and Last name
 
@@ -97,7 +101,7 @@ public class Order {
 
 
 
-        Thread.sleep(3000);
+
     }
 
     @Test(description = "Order", priority = 2)
@@ -105,6 +109,8 @@ public class Order {
 
 
         //Order
+
+        WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
 
         chromeDriver.get("http://automationpractice.com/index.php");
         chromeDriver.findElementByClassName("sf-with-ul").click();
@@ -117,47 +123,60 @@ public class Order {
         addToCartBtn.isDisplayed();
         addToCartBtn.click();
 
-        Thread.sleep(2000);
+        WebElement mediumButton = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.className("button-medium")));
 
         //Proceed to checkout
 
-        chromeDriver.findElementByClassName("button-medium").click();
+        mediumButton.click();
 
-        Thread.sleep(2000);
+        WebElement standardCheckout = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.className("standard-checkout")));
 
         //Summary
 
-        chromeDriver.findElementByClassName("standard-checkout").click();
+        standardCheckout.click();
 
-        Thread.sleep(2000);
+        WebElement processAddress = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.name("processAddress")));
 
         //Address
 
-        chromeDriver.findElementByName("processAddress").click();
+        processAddress.click();
 
-        Thread.sleep(2000);
+
+        WebElement cgv = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.id("uniform-cgv")));
 
         //Shipping
 
-        chromeDriver.findElementById("cgv").click();
-        chromeDriver.findElementByName("processCarrier").click();
+        cgv.click();
 
-        Thread.sleep(2000);
+        WebElement processCarrier = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.name("processCarrier")));
+
+        processCarrier.click();
+
+        WebElement bankWire = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.className("bankwire")));
 
         //Payment
 
-        chromeDriver.findElementByClassName("bankwire").click();
+        bankWire.click();
 
-        Thread.sleep(2000);
+        WebElement form = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".center_column > form")));
 
-//        chromeDriver.findElementByClassName("button-medium").click();
+//        Submit
 
-        chromeDriver.findElementByCssSelector(".center_column > form").submit();
-        Thread.sleep(2000);
+        form.submit();
+
+        WebElement order = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".box > .cheque-indent > .dark")));
 
         //Verify
 
-        WebElement order = chromeDriver.findElementByCssSelector(".box > .cheque-indent > .dark");
+
         order.isDisplayed();
         Assert.assertTrue(order.getText().contains("Your order on My Store is complete."));
 
@@ -166,7 +185,7 @@ public class Order {
 
 
 
-        Thread.sleep(3000);
+
 
     }
 
