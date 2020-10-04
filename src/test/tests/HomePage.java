@@ -28,6 +28,7 @@ public class HomePage {
         System.setProperty("webdriver.chrome.driver", userDirProperty + "/src/main/resources/chromedriver");
         chromeDriver = new ChromeDriver();
         chromeDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        chromeDriver.get("http://automationpractice.com/index.php");
     }
 
     @AfterTest
@@ -35,24 +36,24 @@ public class HomePage {
         chromeDriver.quit();
     }
 
-    @Test(description = "Display Elements", priority = 1)
-    public void contentTest() throws InterruptedException {
+     @Test(description = "Display Elements", priority = 1)
+    public void contentTest() {
         chromeDriver.get("http://automationpractice.com/index.php");
         Assert.assertTrue(chromeDriver.getTitle().contains("My Store"));
         chromeDriver.findElementById("search_query_top").isDisplayed();
         chromeDriver.findElementByClassName("logo").isDisplayed();
-        chromeDriver.findElementById("homepage-slider").isDisplayed();
+
 
 
 
     }
 
     @Test(description = "Valid Search Query")
-    public void searchTest() throws InterruptedException {
+    public void searchTest() {
 
         WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
 
-        chromeDriver.get("http://automationpractice.com/index.php");
+
         WebElement searchInput = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("search_query_top")));
         searchInput.sendKeys("dress");
@@ -61,7 +62,9 @@ public class HomePage {
     }
 
     @Test(description = "Invalid Search Query", priority = 2)
-    public void searchTestnegative() throws InterruptedException {
+    public void searchTestnegative() {
+
+
         WebDriverWait wait = new WebDriverWait(chromeDriver, 10);
         WebElement searchInput = wait.until(
                 ExpectedConditions.visibilityOfElementLocated(By.id("search_query_top")));
@@ -71,6 +74,8 @@ public class HomePage {
         chromeDriver.findElementByClassName("alert-warning").isDisplayed();
         Assert.assertTrue(chromeDriver.findElementByClassName("alert-warning").getText().contains("asdf"));
     }
+
+    //Add to cart test
 
     @Test(description = "Add To Cart", priority = 3)
     public void addTocart() throws InterruptedException {
@@ -85,7 +90,8 @@ public class HomePage {
         addToCartBtn.isDisplayed();
         addToCartBtn.click();
 
-        Thread.sleep(2000);
+
+
 
 
         WebElement cartWrapperHeader = wait.until(
@@ -96,7 +102,7 @@ public class HomePage {
     }
 
     @Test(description = "New User Newsletter", priority = 4)
-    public void newUser() throws InterruptedException {
+    public void newUser() {
 
         chromeDriver.get("http://automationpractice.com/index.php");
         chromeDriver.findElementById("newsletter-input").sendKeys(utilsFunction.getRandomEmailAddress());
@@ -108,7 +114,7 @@ public class HomePage {
     }
 
     @Test(description = "Previous User Newsletter", priority = 5)
-    public void previousUser() throws InterruptedException {
+    public void previousUser() {
 
         chromeDriver.get("http://automationpractice.com/index.php");
         chromeDriver.findElementById("newsletter-input").sendKeys("nsg@dada.com");
@@ -121,10 +127,13 @@ public class HomePage {
     }
 
     @Test(description = "Redirect", priority = 6)
-    public void redirect() throws InterruptedException {
+    public void redirect() {
+
+
+        //Facebook Redirect
 
         chromeDriver.get("http://automationpractice.com/index.php");
-        //Facebook Redirect
+
         chromeDriver.findElementByClassName("facebook").click();
 
         SoftAssertions softAssertions = new SoftAssertions();
@@ -165,7 +174,7 @@ public class HomePage {
 
 
  @Test(description = "Contact Us", priority = 7)
-    public void contactUs() throws InterruptedException {
+    public void contactUs() {
 
 
         //Subject Heading

@@ -24,6 +24,7 @@ public class Order {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", userDirProperty + "/src/main/resources/chromedriver");
         chromeDriver = new ChromeDriver();
+        chromeDriver.get("http://automationpractice.com/index.php");
     }
 
     @AfterTest
@@ -32,12 +33,12 @@ public class Order {
     }
 
     @Test(description = "Sign Up", priority = 1)
-    public void signUp() throws InterruptedException {
+    public void signUp() {
 
 
         //Sign Up
 
-        chromeDriver.get("http://automationpractice.com/index.php");
+
         chromeDriver.findElementByClassName("login").click();
         chromeDriver.findElementById("email_create").sendKeys(utilsFunction.getRandomEmailAddress());
         chromeDriver.findElementByClassName("icon-user").click();
@@ -105,7 +106,7 @@ public class Order {
     }
 
     @Test(description = "Order", priority = 2)
-    public void order() throws InterruptedException {
+    public void order() {
 
 
         //Order
